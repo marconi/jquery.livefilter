@@ -21,6 +21,13 @@
 	 
 		$(inputEl).keyup(function(){
 			var val = $(this).val();
+
+			// don't filter if filter value is empty
+			if (val.trim() === '') {
+				el.parents(filterEl).show();
+				return;
+			}
+
 			var contains = el.filter(':inContains("'+val+'")');
 			var containsNot = el.filter(':not(:inContains("'+val+'"))');
 			if (options.filterChildSelector){
