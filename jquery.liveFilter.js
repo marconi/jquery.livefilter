@@ -15,7 +15,8 @@
 			after: function(){}
 		};
 		var options = $.extend(defaults, options);
-		
+		var filterTag = (typeof filterEl === 'object') ? filterEl.selector : filterEl;
+
 		var el = $(this).find(filterEl);
 		if (options.filterChildSelector) el = el.find(options.filterChildSelector);
 	 
@@ -24,17 +25,18 @@
 
 			// don't filter if filter value is empty
 			if (val.trim() === '') {
-				el.parents(filterEl).show();
+				el.parents(filterTag).show();
 				return;
 			}
 
 			var contains = el.filter(':inContains("'+val+'")');
 			var containsNot = el.filter(':not(:inContains("'+val+'"))');
+
 			if (options.filterChildSelector){
-				contains = contains.parents(filterEl);
-				containsNot = containsNot.parents(filterEl).hide();
+				contains = contains.parent(filterTag);
+				containsNot = containsNot.parent(filterTag).hide();
 			}
-			
+
 			options.before.call(this, contains, containsNot);
 			
 			contains.show();
